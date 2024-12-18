@@ -7,15 +7,14 @@ Empty expressions
 ---
 
 (template
-  (jinja_expression)
-  )
+  (jinja_expression))
 
 ====================
 String expressions
 ====================
 
 {{ "Hello World" }}
-{{ "Escape \n\r \\ \" \' " }}
+{{ "Escape \n\r\\\"\'\t\b\f'" }}
 
 ---
 
@@ -24,9 +23,7 @@ String expressions
     (string
       (string_start)
       (string_content)
-      (string_end)
-      )
-    )
+      (string_end)))
   (jinja_expression
     (string
       (string_start)
@@ -36,11 +33,11 @@ String expressions
         (escape_sequence)
         (escape_sequence)
         (escape_sequence)
+        (escape_sequence)
+        (escape_sequence)
+        (escape_sequence)
         )
-      (string_end)
-      )
-    )
-  )
+      (string_end))))
 
 ====================
 Integer expressions
@@ -56,9 +53,7 @@ Integer expressions
     (integer)
     )
   (jinja_expression
-    (integer)
-    )
-  )
+    (integer)))
 
 ====================
 Float expressions
@@ -76,8 +71,7 @@ Float expressions
   (jinja_expression
     (float))
   (jinja_expression
-    (float))
-)
+    (float)))
 
 ====================
 List expressions
@@ -93,21 +87,15 @@ List expressions
       (string
         (string_start)
         (string_content)
-        (string_end)
-        )
+        (string_end))
       (string
         (string_start)
         (string_content)
-        (string_end)
-        )
+        (string_end))
       (string
         (string_start)
         (string_content)
-        (string_end)
-        )
-      )
-    )
-  )
+        (string_end)))))
 
 ====================
 Tuple expressions
@@ -133,11 +121,7 @@ Tuple expressions
       (string
         (string_start)
         (string_content)
-        (string_end)
-        )
-      )
-    )
-  )
+        (string_end)))))
 
 ====================
 Dictionary expressions
@@ -154,41 +138,29 @@ Dictionary expressions
         key: (string
           (string_start)
           (string_content)
-          (string_end)
-          )
+          (string_end))
         value: (string
           (string_start)
           (string_content)
-          (string_end)
-          )
-        )
+          (string_end)))
       (pair
         key: (string
           (string_start)
           (string_content)
-          (string_end)
-          )
+          (string_end))
         value: (string
           (string_start)
           (string_content)
-          (string_end)
-          )
-        )
+          (string_end)))
       (pair
         key: (string
           (string_start)
           (string_content)
-          (string_end)
-          )
+          (string_end))
         value: (string
           (string_start)
           (string_content)
-          (string_end)
-          )
-        )
-      )
-    )
-  )
+          (string_end))))))
 
 ====================
 Boolean expressions
@@ -203,8 +175,7 @@ Boolean expressions
   (jinja_expression
     (true))
   (jinja_expression
-    (false))
-)
+    (false)))
 
 ====================
 Tilde operations
@@ -221,18 +192,12 @@ Tilde operations
         left: (string
           (string_start)
           (string_content)
-          (string_end)
-          )
-        right: (identifier)
-        )
+          (string_end))
+        right: (identifier))
       right: (string
         (string_start)
         (string_content)
-        (string_end)
-        )
-      )
-    )
-  )
+        (string_end)))))
 
 ====================
 Conditional expressions
@@ -249,14 +214,38 @@ Conditional expressions
         (identifier)
         (comparison_operator
           (identifier)
-          (identifier)
-          )
+          (identifier))
         (string
           (string_start)
           (string_content)
-          (string_end)
-          )
-        )
-      )
-    )
-  )
+          (string_end))))))
+
+====================
+No format/raw/byte string expressions
+====================
+
+{{ f"This is not allowed{'!'}" }}
+{{ r"This is not allowed!" }}
+{{ b"This is not allowed!" }}
+
+---
+
+(template
+  (jinja_expression
+    (ERROR (identifier))
+    (string
+      (string_start)
+      (string_content)
+      (string_end)))
+  (jinja_expression
+    (ERROR (identifier))
+    (string
+      (string_start)
+      (string_content)
+      (string_end)))
+  (jinja_expression
+    (ERROR (identifier))
+    (string
+      (string_start)
+      (string_content)
+      (string_end))))

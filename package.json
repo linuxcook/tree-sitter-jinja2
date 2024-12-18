@@ -4,15 +4,13 @@
   "description": "",
   "main": "index.js",
   "types": "bindings/node",
-  "tree-sitter": [
-    {
-      "scope": "source.jinja",
-      "file-types": [
-        "jinja",
-        "jinja2"
-      ],
-      "highlights": "queries/highlights.scm"
-    }
+  "files": [
+    "grammar.js",
+    "binding.gyp",
+    "prebuilds/**",
+    "bindings/node/*",
+    "queries/*",
+    "src/**"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -37,12 +35,10 @@
     "tree-sitter-cli": "^0.22.5",
     "prebuildify": "^6.0.0"
   },
-  "files": [
-    "grammar.js",
-    "binding.gyp",
-    "prebuilds/**",
-    "bindings/node/*",
-    "queries/*",
-    "src/**"
+  "tree-sitter": [
+    {
+      "scope": "source.jinja2",
+      "injection-regex": "^jinja2$"
+    }
   ]
 }
