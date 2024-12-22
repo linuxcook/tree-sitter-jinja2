@@ -1501,10 +1501,6 @@
       "required": false,
       "types": [
         {
-          "type": "escape_interpolation",
-          "named": true
-        },
-        {
           "type": "escape_sequence",
           "named": true
         }
@@ -1804,10 +1800,6 @@
   {
     "type": "endwhile",
     "named": false
-  },
-  {
-    "type": "escape_interpolation",
-    "named": true
   },
   {
     "type": "escape_sequence",

@@ -108,7 +108,6 @@
 
 [
   (escape_sequence)
-  (escape_interpolation)
 ] @string.escape
 
 (jinja_statement) @tag

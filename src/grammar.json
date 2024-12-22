@@ -3163,10 +3163,6 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "escape_interpolation"
-            },
-            {
-              "type": "SYMBOL",
               "name": "escape_sequence"
             },
             {
@@ -3391,18 +3387,6 @@
   "externals": [
     {
       "type": "SYMBOL",
-      "name": "_newline"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "_indent"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "_dedent"
-    },
-    {
-      "type": "SYMBOL",
       "name": "string_start"
     },
     {
@@ -3411,23 +3395,7 @@
     },
     {
       "type": "SYMBOL",
-      "name": "escape_interpolation"
-    },
-    {
-      "type": "SYMBOL",
       "name": "string_end"
-    },
-    {
-      "type": "STRING",
-      "value": "]"
-    },
-    {
-      "type": "STRING",
-      "value": ")"
-    },
-    {
-      "type": "STRING",
-      "value": "}"
     }
   ],
   "inline": [

@@ -38,21 +38,7 @@ module.exports = grammar({
     $.parameter,
   ],
 
-  externals: ($) => [
-    $._newline,
-    $._indent,
-    $._dedent,
-    $.string_start,
-    $._string_content,
-    $.escape_interpolation,
-    $.string_end,
-
-    // Allow the external scanner to check for the validity of closing brackets
-    // so that it can avoid returning dedent tokens between brackets.
-    "]",
-    ")",
-    "}",
-  ],
+  externals: ($) => [$.string_start, $._string_content, $.string_end],
 
   inline: ($) => [
     $._simple_statement,
@@ -589,12 +575,7 @@ module.exports = grammar({
     string_content: ($) =>
       prec.right(
         repeat1(
-          choice(
-            $.escape_interpolation,
-            $.escape_sequence,
-            $._not_escape_sequence,
-            $._string_content,
-          ),
+          choice($.escape_sequence, $._not_escape_sequence, $._string_content),
         ),
       ),
 
