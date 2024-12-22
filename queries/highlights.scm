@@ -206,5 +206,4 @@
   ","
   "."
   ":"
-  ";"
 ] @punctuation.delimiter

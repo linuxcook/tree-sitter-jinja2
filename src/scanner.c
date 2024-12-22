@@ -14,11 +14,9 @@ enum TokenType {
   STRING_CONTENT,
   ESCAPE_INTERPOLATION,
   STRING_END,
-  COMMENT,
   CLOSE_PAREN,
   CLOSE_BRACKET,
   CLOSE_BRACE,
-  EXCEPT,
 };
 
 typedef enum {
@@ -53,14 +51,14 @@ static inline void set_triple(Delimiter *delimiter) {
 
 static inline void set_end_character(Delimiter *delimiter, int32_t character) {
   switch (character) {
-    case '\'':
-      delimiter->flags |= SingleQuote;
-      break;
-    case '"':
-      delimiter->flags |= DoubleQuote;
-      break;
-    default:
-      assert(false);
+  case '\'':
+    delimiter->flags |= SingleQuote;
+    break;
+  case '"':
+    delimiter->flags |= DoubleQuote;
+    break;
+  default:
+    assert(false);
   }
 }
 
@@ -142,7 +140,6 @@ bool tree_sitter_jinja2_external_scanner_scan(void *payload, TSLexer *lexer,
 
   bool found_end_of_line = false;
   uint32_t indent_length = 0;
-  int32_t first_comment_indent_length = -1;
   for (;;) {
     if (lexer->lookahead == '\n') {
       found_end_of_line = true;
@@ -159,7 +156,7 @@ bool tree_sitter_jinja2_external_scanner_scan(void *payload, TSLexer *lexer,
       skip(lexer);
     } else if (lexer->lookahead == '#' &&
                (valid_symbols[INDENT] || valid_symbols[DEDENT] ||
-                valid_symbols[NEWLINE] || valid_symbols[EXCEPT])) {
+                valid_symbols[NEWLINE])) {
       // If we haven't found an EOL yet,
       // then this is a comment after an expression:
       //   foo = bar # comment
@@ -167,9 +164,6 @@ bool tree_sitter_jinja2_external_scanner_scan(void *payload, TSLexer *lexer,
       // token.
       if (!found_end_of_line) {
         return false;
-      }
-      if (first_comment_indent_length == -1) {
-        first_comment_indent_length = (int32_t)indent_length;
       }
       while (lexer->lookahead && lexer->lookahead != '\n') {
         skip(lexer);
@@ -212,12 +206,7 @@ bool tree_sitter_jinja2_external_scanner_scan(void *payload, TSLexer *lexer,
            (!valid_symbols[NEWLINE] &&
             !(valid_symbols[STRING_START] && next_tok_is_string_start) &&
             !within_brackets)) &&
-          indent_length < current_indent_length &&
-
-          // Wait to create a dedent token until we've consumed any
-          // comments
-          // whose indentation matches the current block.
-          first_comment_indent_length < (int32_t)current_indent_length) {
+          indent_length < current_indent_length) {
         array_pop(&scanner->indents);
         lexer->result_symbol = DEDENT;
         return true;
@@ -230,7 +219,7 @@ bool tree_sitter_jinja2_external_scanner_scan(void *payload, TSLexer *lexer,
     }
   }
 
-  if (first_comment_indent_length == -1 && valid_symbols[STRING_START]) {
+  if (valid_symbols[STRING_START]) {
     Delimiter delimiter = new_delimiter();
 
     if (lexer->lookahead == '\'') {

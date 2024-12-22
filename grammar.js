@@ -46,14 +46,12 @@ module.exports = grammar({
     $._string_content,
     $.escape_interpolation,
     $.string_end,
-    $.comment,
 
     // Allow the external scanner to check for the validity of closing brackets
     // so that it can avoid returning dedent tokens between brackets.
     "]",
     ")",
     "}",
-    $.except,
   ],
 
   inline: ($) => [
@@ -85,13 +83,6 @@ module.exports = grammar({
     _statement: ($) => choice($._simple_statement, $._compound_statement),
 
     // Simple statements
-
-    _simple_statements: ($) =>
-      seq(
-        sep1($._simple_statement, SEMICOLON),
-        optional(SEMICOLON),
-        $._newline,
-      ),
 
     _simple_statement: ($) =>
       choice(
