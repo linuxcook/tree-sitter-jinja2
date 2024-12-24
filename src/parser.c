@@ -944,14 +944,12 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .named = true,
   },
   [sym_expression] = {
-    .visible = false,
+    .visible = true,
     .named = true,
-    .supertype = true,
   },
   [sym_primary_expression] = {
-    .visible = false,
+    .visible = true,
     .named = true,
-    .supertype = true,
   },
   [sym_not_operator] = {
     .visible = true,
@@ -1022,14 +1020,12 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .named = true,
   },
   [sym_parameter] = {
-    .visible = false,
+    .visible = true,
     .named = true,
-    .supertype = true,
   },
   [sym_pattern] = {
-    .visible = false,
+    .visible = true,
     .named = true,
-    .supertype = true,
   },
   [sym_tuple_pattern] = {
     .visible = true,

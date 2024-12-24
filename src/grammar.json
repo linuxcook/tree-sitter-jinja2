@@ -3278,12 +3278,5 @@
     "_expressions",
     "_left_hand_side"
   ],
-  "supertypes": [
-    "_simple_statement",
-    "_compound_statement",
-    "expression",
-    "primary_expression",
-    "pattern",
-    "parameter"
-  ]
+  "supertypes": []
 }

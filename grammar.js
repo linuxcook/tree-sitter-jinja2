@@ -16,8 +16,6 @@ const PREC = {
   call: 23,
 };
 
-const SEMICOLON = ";";
-
 module.exports = grammar({
   name: "jinja2",
 
@@ -274,6 +272,7 @@ module.exports = grammar({
       ),
 
     binary_operator: ($) => {
+      /**@type {Array<[(value: number, rule: RuleOrLiteral) => PrecLeftRule | PrecRightRule, string, number]>}*/
       const table = [
         [prec.left, "+", PREC.plus],
         [prec.left, "-", PREC.plus],
@@ -285,14 +284,12 @@ module.exports = grammar({
         [prec.left, "~", PREC.tilde],
       ];
 
-      // @ts-ignore
       return choice(
         ...table.map(([fn, operator, precedence]) =>
           fn(
             precedence,
             seq(
               field("left", $.primary_expression),
-              // @ts-ignore
               field("operator", operator),
               field("right", $.primary_expression),
             ),
