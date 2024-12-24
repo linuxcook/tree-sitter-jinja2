@@ -1,24 +1,37 @@
 ====================
-Empty expressions
+Empty Expression
 ====================
 
 {{}}
-
 ---
 
 (template
   (jinja_expression))
 
 ====================
-String expressions
+String Expression
 ====================
 
+{{ "" }}
 {{ "Hello World" }}
+{{ 'Hello World' }}
 {{ "Escape \n\r\\\"\'\t\b\f'" }}
+{{ f"This is not allowed{'!'}" }}
+{{ r"This is not allowed!" }}
+{{ b"This is not allowed!" }}
 
 ---
 
 (template
+  (jinja_expression
+    (string
+      (string_start)
+      (string_end)))
+  (jinja_expression
+    (string
+      (string_start)
+      (string_content)
+      (string_end)))
   (jinja_expression
     (string
       (string_start)
@@ -35,33 +48,52 @@ String expressions
         (escape_sequence)
         (escape_sequence)
         (escape_sequence)
-        (escape_sequence)
-        )
+        (escape_sequence))
+      (string_end)))
+  (jinja_expression
+    (ERROR (identifier))
+    (string
+      (string_start)
+      (string_content)
+      (string_end)))
+  (jinja_expression
+    (ERROR (identifier))
+    (string
+      (string_start)
+      (string_content)
+      (string_end)))
+  (jinja_expression
+    (ERROR (identifier))
+    (string
+      (string_start)
+      (string_content)
       (string_end))))
 
 ====================
-Integer expressions
+Integer Expression
 ====================
 
 {{ 42 }}
-{{ 123_456 }}
+{{ -123 }}
+{{ 12_323 }}
 
 ---
 
 (template
   (jinja_expression
-    (integer)
-    )
+    (integer))
   (jinja_expression
-    (integer)))
+    (unary_operator
+      argument: (integer)))
+  (jinja_expression
+    (identifier)))
 
 ====================
-Float expressions
+Float Expression
 ====================
 
 {{ 42.23 }}
-{{ 42.1e2 }}
-{{ 123_456.789}}
+{{ -42.23 }}
 
 ---
 
@@ -69,19 +101,29 @@ Float expressions
   (jinja_expression
     (float))
   (jinja_expression
-    (float))
-  (jinja_expression
-    (float)))
+    (unary_operator
+      argument: (float))))
 
 ====================
-List expressions
+List Expression
 ====================
 
+{{ [] }}
+{{ [1, 2, 3, 4, 5] }}
 {{ ['list', 'of', 'objects'] }}
 
 ---
 
 (template
+  (jinja_expression
+    (list))
+  (jinja_expression
+    (list
+      (integer)
+      (integer)
+      (integer)
+      (integer)
+      (integer)))
   (jinja_expression
     (list
       (string
@@ -98,40 +140,64 @@ List expressions
         (string_end)))))
 
 ====================
-Tuple expressions
+Tuple Expression
 ====================
 
+{{ () }}
+{{ (1, 2, 3, 4, 5) }}
 {{ ('tuple', 'of', 'values') }}
 
 ---
 
 (template
   (jinja_expression
+    (tuple))
+  (jinja_expression
+    (tuple
+      (integer)
+      (integer)
+      (integer)
+      (integer)
+      (integer)))
+  (jinja_expression
     (tuple
       (string
         (string_start)
         (string_content)
-        (string_end)
-        )
+        (string_end))
       (string
         (string_start)
         (string_content)
-        (string_end)
-        )
+        (string_end))
       (string
         (string_start)
         (string_content)
         (string_end)))))
 
 ====================
-Dictionary expressions
+Dictionary Expression
 ====================
 
-{{ {'dict': 'of', 'key': 'and', 'value': 'pairs'} }}
+{{ {} }}
+{{ {'dict': 'of'} }}
+{{ {"dict": "of", "key": "and", "value": "pairs"} }}
 
 ---
 
 (template
+  (jinja_expression
+    (dictionary))
+  (jinja_expression
+    (dictionary
+      (pair
+        key: (string
+          (string_start)
+          (string_content)
+          (string_end))
+        value: (string
+          (string_start)
+          (string_content)
+          (string_end)))))
   (jinja_expression
     (dictionary
       (pair
@@ -163,7 +229,7 @@ Dictionary expressions
           (string_end))))))
 
 ====================
-Boolean expressions
+Boolean Expression
 ====================
 
 {{ true }}
@@ -178,7 +244,7 @@ Boolean expressions
     (false)))
 
 ====================
-Tilde operations
+Tilde Expression
 ====================
 
 {{ "Hello " ~ name ~ "!" }}
@@ -200,7 +266,7 @@ Tilde operations
         (string_end)))))
 
 ====================
-Conditional expressions
+Conditional Expression
 ====================
 
 {% extends layout_template if layout_template is defined else 'default.html' %}
@@ -219,33 +285,3 @@ Conditional expressions
           (string_start)
           (string_content)
           (string_end))))))
-
-====================
-No format/raw/byte string expressions
-====================
-
-{{ f"This is not allowed{'!'}" }}
-{{ r"This is not allowed!" }}
-{{ b"This is not allowed!" }}
-
----
-
-(template
-  (jinja_expression
-    (ERROR (identifier))
-    (string
-      (string_start)
-      (string_content)
-      (string_end)))
-  (jinja_expression
-    (ERROR (identifier))
-    (string
-      (string_start)
-      (string_content)
-      (string_end)))
-  (jinja_expression
-    (ERROR (identifier))
-    (string
-      (string_start)
-      (string_content)
-      (string_end))))

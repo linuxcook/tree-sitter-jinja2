@@ -1,24 +1,25 @@
 ====================
-Empty statements
+Empty Statement
 ====================
 
 {%%}
+{% %}
 
 ---
 
 (template
   (jinja_statement)
-  )
+  (jinja_statement))
 
 ====================
-For statements
+For Statement
 ====================
 
 <h1>Members</h1>
 <ul>
-{% for user in users %}
+{%- for user in users %}
   <li>{{ user.username|e }}</li>
-{% endfor %}
+{%- endfor %}
 </ul>
 
 ---
@@ -27,25 +28,18 @@ For statements
   (jinja_statement
     (for_statement
         left: (identifier)
-        right: (identifier)
-      )
-    )
+        right: (identifier)))
   (jinja_expression
     (filter
       object: (attribute
           object: (identifier)
-          attribute: (identifier)
-          )
-      filter: (identifier)
-      )
-    )
+          attribute: (identifier))
+      filter: (identifier)))
   (jinja_statement
-    (end_statement)
-    )
-  )
+    (end_statement)))
 
 ====================
-For statements w/ filter
+For Statement w/ Filter
 ====================
 
 <dl>
@@ -62,37 +56,27 @@ For statements w/ filter
     (for_statement
       left: (pattern_list
         (identifier)
-        (identifier)
-        )
+        (identifier))
       right: (filter
         object: (identifier)
-        filter: (identifier)
-        )
-      )
-    )
+        filter: (identifier))))
   (jinja_expression
     (filter
       object: (identifier)
-      filter: (identifier)
-      )
-    )
+      filter: (identifier)))
   (jinja_expression
     (filter
       object: (identifier)
-      filter: (identifier)
-      )
-    )
+      filter: (identifier)))
   (jinja_statement
-    (end_statement)
-    )
-  )
+    (end_statement)))
 
 ====================
-For statements w/ sequence filter
+For Statement w/ Sequence Filter
 ====================
 
 {% for user in users if not user.hidden %}
-    <li>{{ user.username|e }}</li>
+    <li>{{ user.username | e }}</li>
 {% endfor %}
 
 ---
@@ -106,28 +90,18 @@ For statements w/ sequence filter
         condition: (not_operator
           argument: (attribute
             object: (identifier)
-            attribute: (identifier)
-            )
-          )
-        )
-      )
-    )
+            attribute: (identifier))))))
   (jinja_expression
     (filter
       object: (attribute
         object: (identifier)
-        attribute: (identifier)
-        )
-      filter: (identifier)
-      )
-    )
+        attribute: (identifier))
+      filter: (identifier)))
   (jinja_statement
-    (end_statement)
-    )
-  )
+    (end_statement)))
 
 ====================
-For statements w/ recursive
+For Statement w/ Recursive
 ====================
 
 <ul class="sitemap">
@@ -145,53 +119,36 @@ For statements w/ recursive
   (jinja_statement
     (for_statement
       left: (identifier)
-      right: (identifier)
-      )
-    )
+      right: (identifier)))
   (jinja_expression
     (filter
       object: (attribute
         object: (identifier)
-        attribute: (identifier)
-        )
-      filter: (identifier)
-      )
-    )
+        attribute: (identifier))
+      filter: (identifier)))
   (jinja_expression
     (attribute
       object: (identifier)
-      attribute: (identifier)
-      )
-    )
+      attribute: (identifier)))
   (jinja_statement
     (if_statement
       condition: (attribute
         object: (identifier)
-        attribute: (identifier)
-        )
-      )
-    )
+        attribute: (identifier))))
   (jinja_expression
     (call
       function: (identifier)
       arguments: (argument_list
         (attribute
           object: (identifier)
-          attribute: (identifier)
-          )
-        )
-      )
-    )
+          attribute: (identifier)))))
   (jinja_statement
-    (end_statement)
-    )
+    (end_statement))
   (jinja_statement
-    (end_statement)
-    )
-  )
+    (end_statement)))
 
 ====================
-If statements
+If Statement
 ====================
 
 {% if users %}
@@ -207,34 +164,24 @@ If statements
 (template
   (jinja_statement
     (if_statement
-      condition: (identifier)
-      )
-    )
+      condition: (identifier)))
   (jinja_statement
     (for_statement
       left: (identifier)
-      right: (identifier)
-      )
-    )
+      right: (identifier)))
   (jinja_expression
     (filter
       object: (attribute
         object: (identifier)
-        attribute: (identifier)
-        )
-      filter: (identifier)
-      )
-    )
+        attribute: (identifier))
+      filter: (identifier)))
   (jinja_statement
-    (end_statement)
-    )
+    (end_statement))
   (jinja_statement
-    (end_statement)
-    )
-  )
+    (end_statement)))
 
 ====================
-If/Else statements
+If/Else Statement
 ====================
 
 {% if kenny.sick %}
@@ -252,28 +199,19 @@ If/Else statements
     (if_statement
       condition: (attribute
         object: (identifier)
-        attribute: (identifier)
-        )
-      )
-    )
+        attribute: (identifier))))
   (jinja_statement
     (elif_statement
       condition: (attribute
         object: (identifier)
-        attribute: (identifier)
-        )
-      )
-    )
+        attribute: (identifier))))
   (jinja_statement
-    (else_statement)
-    )
+    (else_statement))
   (jinja_statement
-    (end_statement)
-    )
-  )
+    (end_statement)))
 
 ====================
-Macro statements
+Macro Statement
 ====================
 
 {% macro input(name, value='', type='text', size=20) -%}
@@ -296,42 +234,28 @@ Macro statements
           name: (identifier)
           value: (string
             (string_start)
-            (string_end)
-            )
-          )
+            (string_end)))
         (default_parameter
           name: (identifier)
           value: (string
             (string_start)
             (string_content)
-            (string_end)
-            )
-          )
+            (string_end)))
         (default_parameter
           name: (identifier)
-          value: (integer)
-          )
-        )
-      )
-    )
+          value: (integer)))))
   (jinja_expression
-    (identifier)
-    )
+    (identifier))
   (jinja_expression
-    (identifier)
-    )
+    (identifier))
   (jinja_expression
     (filter
       object: (identifier)
-      filter: (identifier)
-      )
-    )
+      filter: (identifier)))
   (jinja_expression
-    (identifier)
-    )
+    (identifier))
   (jinja_statement
-    (end_statement)
-    )
+    (end_statement))
   (jinja_expression
     (call
       function: (identifier)
@@ -339,11 +263,7 @@ Macro statements
         (string
           (string_start)
           (string_content)
-          (string_end)
-          )
-        )
-      )
-    )
+          (string_end)))))
   (jinja_expression
     (call
       function: (identifier)
@@ -351,23 +271,16 @@ Macro statements
         (string
           (string_start)
           (string_content)
-          (string_end)
-          )
+          (string_end))
         (keyword_argument
           name: (identifier)
           value: (string
             (string_start)
             (string_content)
-            (string_end)
-            )
-          )
-        )
-      )
-    )
-  )
+            (string_end)))))))
 
 ====================
-Call statements
+Call Statement
 ====================
 
 {% call(user) dump_users(list_of_user) %}
@@ -385,38 +298,26 @@ Call statements
   (jinja_statement
     (call_statement
       parameters: (parameters
-        (identifier)
-        )
+        (identifier))
       callable: (call
         function: (identifier)
         arguments: (argument_list
-          (identifier)
-          )
-        )
-      )
-    )
+          (identifier)))))
   (jinja_expression
     (filter
       object: (attribute
         object: (identifier)
-        attribute: (identifier)
-        )
-      filter: (identifier)
-      )
-    )
+        attribute: (identifier))
+      filter: (identifier)))
   (jinja_expression
     (attribute
       object: (identifier)
-      attribute: (identifier)
-      )
-    )
+      attribute: (identifier)))
   (jinja_statement
-    (end_statement)
-    )
-  )
+    (end_statement)))
 
 ====================
-Filter statements
+Filter Statement
 ====================
 
 {% filter upper %}
@@ -430,28 +331,20 @@ Filter statements
 (template
   (jinja_statement
     (filter_statement
-      filter: (identifier))
-    )
+      filter: (identifier)))
   (jinja_statement
-    (end_statement)
-    )
+    (end_statement))
   (jinja_statement
     (filter_statement
       filter: (call
         function: (identifier)
         arguments: (argument_list
-          (integer)
-          )
-        )
-      )
-    )
+          (integer)))))
   (jinja_statement
-    (end_statement)
-    )
-  )
+    (end_statement)))
 
 ====================
-Assignment statements
+Assignment Statement
 ====================
 
 {% set navigation = [('index.html', 'Index'), ('about.html', 'About')] %}
@@ -469,48 +362,32 @@ Assignment statements
             (string
               (string_start)
               (string_content)
-              (string_end)
-              )
+              (string_end))
             (string
               (string_start)
               (string_content)
-              (string_end)
-              )
-            )
+              (string_end)))
           (tuple
             (string
               (string_start)
               (string_content)
-              (string_end)
-              )
+              (string_end))
             (string
               (string_start)
               (string_content)
-              (string_end)
-              )
-            )
-          )
-        )
-      )
-    )
+              (string_end)))))))
   (jinja_statement
     (set_statement
       assignment: (assignment
         left: (pattern_list
           (identifier)
-          (identifier)
-          )
+          (identifier))
         right: (call
           function: (identifier)
-          arguments: (argument_list)
-          )
-        )
-      )
-    )
-  )
+          arguments: (argument_list))))))
 
 ====================
-Assignment statements
+Assignment Statement
 ====================
 
 {% set navigation %}
@@ -528,30 +405,21 @@ Assignment statements
 (template
   (jinja_statement
     (set_statement
-      assignment: (identifier)
-      )
-    )
+      assignment: (identifier)))
   (jinja_statement
-    (end_statement)
-    )
+    (end_statement))
   (jinja_statement
     (set_statement
       assignment: (filter
         object: (identifier)
-        filter: (identifier)
-        )
-      )
-    )
+        filter: (identifier))))
   (jinja_expression
-    (identifier)
-    )
+    (identifier))
   (jinja_statement
-    (end_statement)
-    )
-  )
+    (end_statement)))
 
 ====================
-Block assignment statements
+Block Assignment Statement
 ====================
 
 {% extends "base.html" %}
@@ -577,44 +445,29 @@ Block assignment statements
       (string
         (string_start)
         (string_content)
-        (string_end)
-        )
-      )
-    )
+        (string_end))))
   (jinja_statement
     (block_statement
-      name: (identifier)
-      )
-    )
+      name: (identifier)))
   (jinja_statement
-    (end_statement)
-    )
+    (end_statement))
   (jinja_statement
     (block_statement
-      name: (identifier)
-      )
-    )
+      name: (identifier)))
   (jinja_expression
     (call
       function: (identifier)
-      arguments: (argument_list)
-      )
-    )
+      arguments: (argument_list)))
   (jinja_statement
-    (end_statement)
-    )
+    (end_statement))
   (jinja_statement
     (block_statement
-      name: (identifier)
-      )
-    )
+      name: (identifier)))
   (jinja_statement
-    (end_statement)
-    )
-  )
+    (end_statement)))
 
 ====================
-Include statements
+Include Statement
 ====================
 
 {% include "sidebar.html" %}
@@ -631,51 +484,35 @@ Include statements
       (string
         (string_start)
         (string_content)
-        (string_end)
-        )
-      )
-    )
+        (string_end))))
   (jinja_statement
     (include_statement
       (string
         (string_start)
         (string_content)
-        (string_end)
-        )
-      )
-    )
+        (string_end))))
   (jinja_statement
     (include_statement
       (string
         (string_start)
         (string_content)
-        (string_end)
-        )
-      )
-    )
+        (string_end))))
   (jinja_statement
     (include_statement
       (string
         (string_start)
         (string_content)
-        (string_end)
-        )
-      )
-    )
+        (string_end))))
   (jinja_statement
     (include_statement
       (string
         (string_start)
         (string_content)
-        (string_end)
-        )
-      )
-    )
-  )
+        (string_end)))))
 
 
 ====================
-Import statements
+Import Statement
 ====================
 
 {% import 'forms.html' as forms %}
@@ -690,63 +527,15 @@ Import statements
         name: (string
           (string_start)
           (string_content)
-          (string_end)
-          )
-        alias: (identifier)
-        )
-      )
-    )
+          (string_end))
+        alias: (identifier))))
   (jinja_statement
     (import_from_statement
       module_name: (string
         (string_start)
         (string_content)
-        (string_end)
-        )
+        (string_end))
       name: (aliased_import
         name: (identifier)
-        alias: (identifier)
-        )
-      name: (identifier)
-      )
-    )
-  )
-
-====================
-No format/raw/byte string statements
-====================
-
-{% set fstring = f"This is not allowed{'!'}" %}
-{% set rstring = r"This is not allowed!" %}
-{% set bstring = b"This is not allowed!" %}
-
----
-
-(template
-  (jinja_statement
-    (set_statement
-      assignment: (assignment
-        left: (identifier)
-        (ERROR (identifier))
-        right: (string
-          (string_start)
-          (string_content)
-          (string_end)))))
-  (jinja_statement
-    (set_statement
-      assignment: (assignment
-        left: (identifier)
-        (ERROR (identifier))
-        right: (string
-          (string_start)
-          (string_content)
-          (string_end)))))
-  (jinja_statement
-    (set_statement
-      assignment: (assignment
-        left: (identifier)
-        (ERROR (identifier))
-        right: (string
-          (string_start)
-          (string_content)
-          (string_end))))))
+        alias: (identifier))
+      name: (identifier))))

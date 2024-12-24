@@ -523,22 +523,9 @@ module.exports = grammar({
         field("value", $.expression),
       ),
 
-    integer: (_) => token(repeat1(/\d+_?/)),
+    integer: (_) => token(/\d+/),
 
-    float: (_) => {
-      const digits = repeat1(/\d+_?/);
-      const exponent = seq(/[eE][\+-]?/, digits);
-
-      return token(
-        seq(
-          choice(
-            seq(digits, ".", optional(digits), optional(exponent)),
-            seq(optional(digits), ".", digits, optional(exponent)),
-            seq(digits, exponent),
-          ),
-        ),
-      );
-    },
+    float: (_) => token(seq(/\d+/, ".", optional(/\d+/))),
 
     keyword_argument: ($) =>
       seq(field("name", $.identifier), "=", field("value", $.expression)),

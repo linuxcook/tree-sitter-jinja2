@@ -1,22 +1,29 @@
 ====================
-Empty comments
+Empty Comment
 ====================
+
 {##}
+{#######}
 
 ---
 
 (template
   (jinja_comment)
-)
+  (jinja_comment))
 
 ====================
-Generic comments
+Generic Comment
 ====================
 
 {# comment #}
+{#- comment #}
+{# comment -#}
+{#- comment -#}
 
 ---
 
 (template
   (jinja_comment)
-)
+  (jinja_comment)
+  (jinja_comment)
+  (jinja_comment))
