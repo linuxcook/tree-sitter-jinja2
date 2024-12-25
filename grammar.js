@@ -272,7 +272,9 @@ module.exports = grammar({
       ),
 
     binary_operator: ($) => {
-      /**@type {Array<[(value: number, rule: RuleOrLiteral) => PrecLeftRule | PrecRightRule, string, number]>}*/
+      /**
+       * @type {Array<[(value: number, rule: RuleOrLiteral) => PrecLeftRule | PrecRightRule, string, number]>}
+       */
       const table = [
         [prec.left, "+", PREC.plus],
         [prec.left, "-", PREC.plus],
@@ -620,11 +622,8 @@ module.exports = grammar({
 
 /**
  * Creates a rule to match one or more of the rules separated by a comma
- *
  * @param {RuleOrLiteral} rule
- *
  * @return {SeqRule}
- *
  */
 function commaSep1(rule) {
   return sep1(rule, ",");
@@ -632,13 +631,9 @@ function commaSep1(rule) {
 
 /**
  * Creates a rule to match one or more occurrences of `rule` separated by `sep`
- *
  * @param {RuleOrLiteral} rule
- *
  * @param {RuleOrLiteral} separator
- *
  * @return {SeqRule}
- *
  */
 function sep1(rule, separator) {
   return seq(rule, repeat(seq(separator, rule)));
