@@ -8,8 +8,8 @@ Empty Comment
 ---
 
 (template
-  (jinja_comment)
-  (jinja_comment))
+  (comment)
+  (comment))
 
 ====================
 Generic Comment
@@ -23,7 +23,7 @@ Generic Comment
 ---
 
 (template
-  (jinja_comment)
-  (jinja_comment)
-  (jinja_comment)
-  (jinja_comment))
+  (comment)
+  (comment)
+  (comment)
+  (comment))

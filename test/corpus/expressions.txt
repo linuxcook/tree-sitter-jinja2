@@ -3,10 +3,13 @@ Empty Expression
 ====================
 
 {{}}
+{{   }}
+
 ---
 
 (template
-  (jinja_expression))
+  (expression)
+  (expression))
 
 ====================
 String Expression
@@ -23,21 +26,21 @@ String Expression
 ---
 
 (template
-  (jinja_expression
+  (expression
     (string
       (string_start)
       (string_end)))
-  (jinja_expression
-    (string
-      (string_start)
-      (string_content)
-      (string_end)))
-  (jinja_expression
+  (expression
     (string
       (string_start)
       (string_content)
       (string_end)))
-  (jinja_expression
+  (expression
+    (string
+      (string_start)
+      (string_content)
+      (string_end)))
+  (expression
     (string
       (string_start)
       (string_content
@@ -50,19 +53,19 @@ String Expression
         (escape_sequence)
         (escape_sequence))
       (string_end)))
-  (jinja_expression
+  (expression
     (ERROR (identifier))
     (string
       (string_start)
       (string_content)
       (string_end)))
-  (jinja_expression
+  (expression
     (ERROR (identifier))
     (string
       (string_start)
       (string_content)
       (string_end)))
-  (jinja_expression
+  (expression
     (ERROR (identifier))
     (string
       (string_start)
@@ -80,12 +83,14 @@ Integer Expression
 ---
 
 (template
-  (jinja_expression
+  (expression
     (integer))
-  (jinja_expression
+  (expression
     (unary_operator
       argument: (integer)))
-  (jinja_expression
+  (expression
+    (ERROR
+      (integer))
     (identifier)))
 
 ====================
@@ -98,9 +103,9 @@ Float Expression
 ---
 
 (template
-  (jinja_expression
+  (expression
     (float))
-  (jinja_expression
+  (expression
     (unary_operator
       argument: (float))))
 
@@ -115,16 +120,16 @@ List Expression
 ---
 
 (template
-  (jinja_expression
+  (expression
     (list))
-  (jinja_expression
+  (expression
     (list
       (integer)
       (integer)
       (integer)
       (integer)
       (integer)))
-  (jinja_expression
+  (expression
     (list
       (string
         (string_start)
@@ -150,16 +155,16 @@ Tuple Expression
 ---
 
 (template
-  (jinja_expression
+  (expression
     (tuple))
-  (jinja_expression
+  (expression
     (tuple
       (integer)
       (integer)
       (integer)
       (integer)
       (integer)))
-  (jinja_expression
+  (expression
     (tuple
       (string
         (string_start)
@@ -185,9 +190,9 @@ Dictionary Expression
 ---
 
 (template
-  (jinja_expression
+  (expression
     (dictionary))
-  (jinja_expression
+  (expression
     (dictionary
       (pair
         key: (string
@@ -198,7 +203,7 @@ Dictionary Expression
           (string_start)
           (string_content)
           (string_end)))))
-  (jinja_expression
+  (expression
     (dictionary
       (pair
         key: (string
@@ -238,9 +243,9 @@ Boolean Expression
 ---
 
 (template
-  (jinja_expression
+  (expression
     (true))
-  (jinja_expression
+  (expression
     (false)))
 
 ====================
@@ -252,7 +257,7 @@ Tilde Expression
 ---
 
 (template
-  (jinja_expression
+  (expression
     (binary_operator
       left: (binary_operator
         left: (string
@@ -269,19 +274,21 @@ Tilde Expression
 Conditional Expression
 ====================
 
-{% extends layout_template if layout_template is defined else 'default.html' %}
+{{ 'string' if layout_template is defined else 'default.html' }}
 
 ---
 
 (template
-  (jinja_statement
-    (extends_statement
-      (conditional_expression
+  (expression
+    (conditional_expression
+      (string
+        (string_start)
+        (string_content)
+        (string_end))
+      (comparison_operator
         (identifier)
-        (comparison_operator
-          (identifier)
-          (identifier))
-        (string
-          (string_start)
-          (string_content)
-          (string_end))))))
+        (identifier))
+      (string
+        (string_start)
+        (string_content)
+        (string_end)))))

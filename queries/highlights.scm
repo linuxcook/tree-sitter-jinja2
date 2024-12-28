@@ -1,9 +1,6 @@
 ; Variables
 (identifier) @variable
 
-; Reset highlighting in f-string interpolations
-(interpolation) @none
-
 ; Identifier naming conventions
 ((identifier) @type
   (#lua-match? @type "^[A-Z].*[a-z]"))
@@ -18,8 +15,6 @@
   (#any-of? @constant.builtin
     ; https://docs.python.org/3/library/constants.html
     "NotImplemented" "Ellipsis" "quit" "exit" "copyright" "credits" "license"))
-
-"_" @constant.builtin ; match wildcard
 
 ((attribute
   attribute: (identifier) @variable.member)
@@ -104,14 +99,11 @@
 
 (float) @number.float
 
-(jinja_comment) @comment @spell
+(comment) @comment @spell
 
 [
   (escape_sequence)
 ] @string.escape
-
-(jinja_statement) @tag
-(jinja_expression) @tag
 
 (string) @string
 
@@ -134,6 +126,17 @@
   "~"
 ] @operator
 
+[
+ "{%"
+ "{%-"
+ "%}"
+ "-%}"
+ "{{"
+ "{{-"
+ "}}"
+ "-}}"
+] @tag
+
 ; Keywords
 [
   "and"
@@ -153,16 +156,12 @@
   "filter"
   "set"
   "extends"
+  "endmacro"
+  "endcall"
+  "endfilter"
+  "endset"
+  "endblock"
 ] @keyword
-
-(end_statement
-  [
-    "endmacro"
-    "endcall"
-    "endfilter"
-    "endset"
-    "endblock"
-  ] @keyword)
 
 "include" @keyword.import
 
@@ -184,8 +183,6 @@
 [
   "for"
   "endfor"
-  "while"
-  "endwhile"
 ] @keyword.repeat
 
 [
@@ -196,10 +193,6 @@
   "{"
   "}"
 ] @punctuation.bracket
-
-(interpolation
-  "{" @punctuation.special
-  "}" @punctuation.special)
 
 [
   ","
