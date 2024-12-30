@@ -20,6 +20,10 @@
   attribute: (identifier) @variable.member)
   (#lua-match? @variable.member "^[%l_].*$"))
 
+((filter
+  filter: (identifier) @variable.member)
+  (#lua-match? @variable.member "^[%l_].*$"))
+
 ((assignment
   left: (identifier) @type.definition))
 
@@ -124,6 +128,7 @@
   ">"
   ">="
   "~"
+  "|"
 ] @operator
 
 [
