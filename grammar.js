@@ -38,9 +38,9 @@ module.exports = grammar({
   rules: {
     template: ($) => repeat($._block),
 
-    _block: ($) => choice($._statement, $.expression, $.content, $.comment),
+    _block: ($) => choice($._statement, $.expression, $.comment, $.content),
 
-    content: (_) => /[^{]+|\{[^{%]/,
+    content: (_) => token(repeat(/[^{]+|\{[^{%#]/)),
 
     comment: (_) => seq("{#", repeat(/./), "#}", optional("\n")),
 
@@ -54,6 +54,7 @@ module.exports = grammar({
           $.filter_statement,
           $.set_statement,
           $.block_statement,
+          //$.raw_statement,
           $.extends_statement,
           $.include_statement,
           $.import_statement,
@@ -133,10 +134,17 @@ module.exports = grammar({
       ),
 
     set_statement: ($) =>
-      prec.right(
+      choice(
+        tag(
+          "set",
+          field("left", $._left_hand_side),
+          "=",
+          field("right", $._right_hand_side),
+        ),
         seq(
-          tag("set", field("assignment", choice($._expression, $.assignment))),
-          optional(seq(repeat($._block), tag("endset"))),
+          tag("set", field("variable", choice($.identifier, $.filter))),
+          repeat($._block),
+          tag("endset"),
         ),
       ),
 
@@ -146,6 +154,9 @@ module.exports = grammar({
         repeat($._block),
         tag("endblock", optional($.identifier)),
       ),
+
+    //raw_statement: ($) =>
+    //  seq(tag("raw"), alias($._raw, $.content), tag("endraw")),
 
     extends_statement: ($) => tag("extends", $._expression),
 

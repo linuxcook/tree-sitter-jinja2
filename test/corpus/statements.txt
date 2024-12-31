@@ -366,7 +366,7 @@ Filter Statement
     (content)))
 
 ====================
-Assignment Statement
+Set Statement
 ====================
 
 {% set navigation = [('index.html', 'Index'), ('about.html', 'About')] %}
@@ -376,38 +376,36 @@ Assignment Statement
 
 (template
   (set_statement
-    assignment: (assignment
-      left: (identifier)
-      right: (list
-        (tuple
-          (string
-            (string_start)
-            (string_content)
-            (string_end))
-          (string
-            (string_start)
-            (string_content)
-            (string_end)))
-        (tuple
-          (string
-            (string_start)
-            (string_content)
-            (string_end))
-          (string
-            (string_start)
-            (string_content)
-            (string_end))))))
+    left: (identifier)
+    right: (list
+      (tuple
+        (string
+          (string_start)
+          (string_content)
+          (string_end))
+        (string
+          (string_start)
+          (string_content)
+          (string_end)))
+      (tuple
+        (string
+          (string_start)
+          (string_content)
+          (string_end))
+        (string
+          (string_start)
+          (string_content)
+          (string_end)))))
   (set_statement
-    assignment: (assignment
-      left: (pattern_list
-        (identifier)
-        (identifier))
-      right: (call
-        function: (identifier)
-        arguments: (argument_list)))))
+    left: (pattern_list
+      (identifier)
+      (identifier))
+    right: (call
+      function: (identifier)
+      arguments: (argument_list))))
 
 ====================
-Block Assignment Statement
+Block Set Statement
 ====================
 
 {% set navigation %}
@@ -424,15 +422,50 @@ Block Assignment Statement
 
 (template
   (set_statement
-    assignment: (identifier)
+    variable: (identifier)
     (content))
   (set_statement
-    assignment: (filter
+    variable: (filter
       object: (identifier)
       filter: (identifier))
     (content)
     (expression
       (identifier))))
+
+====================
+Nested Set Statement
+====================
+
+{%- for field in fields %}
+  {%- set name = field.name %}
+  {%- set type = field.type %}
+  <span>{{ name }}</span>
+  <span>{{ type }}</span>
+{%- endfor %}
+
+---
+
+(template
+  (for_statement
+    left: (identifier)
+    right: (identifier)
+    (set_statement
+      left: (identifier)
+      right: (attribute
+        object: (identifier)
+        attribute: (identifier)))
+    (set_statement
+      left: (identifier)
+      right: (attribute
+        object: (identifier)
+        attribute: (identifier)))
+      (content)
+      (expression
+        (identifier))
+      (content)
+      (expression
+        (identifier))
+      (content)))
 
 ====================
 Block Statement
@@ -470,8 +503,6 @@ Block Statement
       (call
         function: (identifier)
         arguments: (argument_list)))
-    (content)
-    (content)
     (content))
   (block_statement
     name: (identifier)

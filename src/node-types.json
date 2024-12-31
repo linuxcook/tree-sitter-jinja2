@@ -1956,9 +1956,23 @@
     "type": "set_statement",
     "named": true,
     "fields": {
-      "assignment": {
+      "left": {
         "multiple": false,
-        "required": true,
+        "required": false,
+        "types": [
+          {
+            "type": "pattern",
+            "named": true
+          },
+          {
+            "type": "pattern_list",
+            "named": true
+          }
+        ]
+      },
+      "right": {
+        "multiple": false,
+        "required": false,
         "types": [
           {
             "type": "as_pattern",
@@ -1981,11 +1995,33 @@
             "named": true
           },
           {
+            "type": "expression_list",
+            "named": true
+          },
+          {
             "type": "not_operator",
             "named": true
           },
           {
+            "type": "pattern_list",
+            "named": true
+          },
+          {
             "type": "primary_expression",
+            "named": true
+          }
+        ]
+      },
+      "variable": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "filter",
+            "named": true
+          },
+          {
+            "type": "identifier",
             "named": true
           }
         ]
