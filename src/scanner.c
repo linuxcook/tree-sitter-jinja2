@@ -10,6 +10,8 @@ enum TokenType {
   STRING_START,
   STRING_CONTENT,
   STRING_END,
+  CONTENT,
+  RAW_CONTENT,
 };
 
 typedef enum {
@@ -21,6 +23,16 @@ typedef enum {
 typedef struct {
   char flags;
 } Delimiter;
+
+static bool match(TSLexer *lexer, const char *p) {
+  while (*p) {
+    if (lexer->lookahead != *p)
+      return false;
+    lexer->advance(lexer, false);
+    ++p;
+  }
+  return true;
+}
 
 static inline Delimiter new_delimiter() { return (Delimiter){0}; }
 
@@ -89,7 +101,7 @@ bool tree_sitter_jinja2_external_scanner_scan(void *payload, TSLexer *lexer,
               } else {
                 advance(lexer);
                 lexer->mark_end(lexer);
-                array_pop(&scanner->delimiters);
+                (void)array_pop(&scanner->delimiters);
                 lexer->result_symbol = STRING_END;
               }
               return true;
@@ -106,7 +118,7 @@ bool tree_sitter_jinja2_external_scanner_scan(void *payload, TSLexer *lexer,
           lexer->result_symbol = STRING_CONTENT;
         } else {
           advance(lexer);
-          array_pop(&scanner->delimiters);
+          (void)array_pop(&scanner->delimiters);
           lexer->result_symbol = STRING_END;
         }
         lexer->mark_end(lexer);
@@ -123,10 +135,34 @@ bool tree_sitter_jinja2_external_scanner_scan(void *payload, TSLexer *lexer,
 
   lexer->mark_end(lexer);
 
-  bool found_end_of_line = false;
+  if (valid_symbols[CONTENT]) {
+    bool consumed = false;
+
+    lexer->mark_end(lexer);
+    while (!lexer->eof(lexer)) {
+      if (lexer->lookahead == '{') {
+        lexer->advance(lexer, false);
+
+        if (lexer->lookahead == '%' || lexer->lookahead == '{' ||
+            lexer->lookahead == '#') {
+          break;
+        }
+      } else {
+        lexer->advance(lexer, false);
+        lexer->mark_end(lexer);
+      }
+
+      consumed = true;
+    }
+
+    if (consumed) {
+      lexer->result_symbol = CONTENT;
+      return true;
+    }
+  }
+
   for (;;) {
     if (lexer->lookahead == '\n') {
-      found_end_of_line = true;
       skip(lexer);
     } else if (lexer->lookahead == ' ') {
       skip(lexer);
@@ -145,7 +181,6 @@ bool tree_sitter_jinja2_external_scanner_scan(void *payload, TSLexer *lexer,
         return false;
       }
     } else if (lexer->eof(lexer)) {
-      found_end_of_line = true;
       break;
     } else {
       break;
@@ -188,6 +223,42 @@ bool tree_sitter_jinja2_external_scanner_scan(void *payload, TSLexer *lexer,
     }
   }
 
+  if (valid_symbols[RAW_CONTENT]) {
+    lexer->mark_end(lexer);
+    while (!lexer->eof(lexer)) {
+      if (lexer->lookahead == '{') {
+        if (match(lexer, "{%")) {
+          if (lexer->lookahead == '-') {
+            lexer->advance(lexer, false);
+          }
+
+          while (lexer->lookahead == ' ') {
+            lexer->advance(lexer, true);
+          }
+
+          if (match(lexer, "endraw")) {
+            while (lexer->lookahead == ' ') {
+              lexer->advance(lexer, true);
+            }
+
+            if (lexer->lookahead == '-') {
+              lexer->advance(lexer, false);
+            }
+
+            if (match(lexer, "%}")) {
+              lexer->result_symbol = RAW_CONTENT;
+              return true;
+            }
+          }
+        }
+      } else {
+        lexer->advance(lexer, false);
+      }
+
+      lexer->mark_end(lexer);
+    }
+  }
+
   return false;
 }
 
@@ -207,8 +278,6 @@ unsigned tree_sitter_jinja2_external_scanner_serialize(void *payload,
     memcpy(&buffer[size], scanner->delimiters.contents, delimiter_count);
   }
   size += delimiter_count;
-
-  uint32_t iter = 1;
 
   return size;
 }

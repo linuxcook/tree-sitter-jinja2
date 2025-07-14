@@ -31,7 +31,13 @@ module.exports = grammar({
 
   supertypes: ($) => [$.primary_expression, $.pattern, $.parameter],
 
-  externals: ($) => [$.string_start, $._string_content, $.string_end],
+  externals: ($) => [
+    $.string_start,
+    $._string_content,
+    $.string_end,
+    $.content,
+    $.raw_content,
+  ],
 
   word: ($) => $.identifier,
 
@@ -40,35 +46,29 @@ module.exports = grammar({
 
     _block: ($) => choice($._statement, $.expression, $.comment, $.content),
 
-    content: (_) => token(repeat(/[^{]+|\{[^{%#]/)),
-
-    comment: (_) => seq("{#", repeat(/./), "#}", optional("\n")),
+    comment: (_) => seq("{#", repeat(/./), "#}"),
 
     _statement: ($) =>
-      seq(
-        choice(
-          $.if_statement,
-          $.for_statement,
-          $.macro_statement,
-          $.call_statement,
-          $.filter_statement,
-          $.set_statement,
-          $.block_statement,
-          //$.raw_statement,
-          $.extends_statement,
-          $.include_statement,
-          $.import_statement,
-          $.import_from_statement,
-        ),
-        optional("\n"),
+      choice(
+        $.if_statement,
+        $.for_statement,
+        $.macro_statement,
+        $.call_statement,
+        $.filter_statement,
+        $.set_statement,
+        $.block_statement,
+        $.raw_statement,
+        $.extends_statement,
+        $.include_statement,
+        $.import_statement,
+        $.import_from_statement,
       ),
 
     expression: ($) =>
       seq(
-        choice("{{", "{{-"),
+        choice("{{", "{{-", "{{+"),
         optional($._expression),
-        choice("}}", "-}}"),
-        optional("\n"),
+        choice("}}", "-}}", "+}}"),
       ),
 
     // Statements
@@ -79,16 +79,13 @@ module.exports = grammar({
         repeat($._block),
         repeat($.elif_clause),
         optional($.else_clause),
-        prec.right(tag("endif")),
+        tag("endif"),
       ),
 
     elif_clause: ($) =>
-      prec.dynamic(
-        1,
-        seq(tag("elif", field("condition", $._expression)), repeat($._block)),
-      ),
+      seq(tag("elif", field("condition", $._expression)), repeat($._block)),
 
-    else_clause: ($) => prec.dynamic(2, seq(tag("else"), repeat($._block))),
+    else_clause: ($) => seq(tag("else"), repeat($._block)),
 
     for_statement: ($) =>
       seq(
@@ -101,6 +98,7 @@ module.exports = grammar({
           optional("recursive"),
         ),
         repeat($._block),
+        optional($.else_clause),
         tag("endfor"),
       ),
 
@@ -155,8 +153,7 @@ module.exports = grammar({
         tag("endblock", optional($.identifier)),
       ),
 
-    //raw_statement: ($) =>
-    //  seq(tag("raw"), alias($._raw, $.content), tag("endraw")),
+    raw_statement: ($) => seq(tag("raw"), $.raw_content, tag("endraw")),
 
     extends_statement: ($) => tag("extends", $._expression),
 
@@ -542,5 +539,5 @@ function sep1(rule, separator) {
  * @return {SeqRule}
  */
 function tag(...rules) {
-  return seq(choice("{%", "{%-"), ...rules, choice("%}", "-%}"));
+  return seq(choice("{%", "{%-", "{%+"), ...rules, choice("%}", "-%}", "+%}"));
 }

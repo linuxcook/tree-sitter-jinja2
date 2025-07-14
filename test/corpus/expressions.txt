@@ -8,8 +8,11 @@ Empty Expression
 ---
 
 (template
+  (content)
   (expression)
-  (expression))
+  (content)
+  (expression)
+  (content))
 
 ====================
 String Expression
@@ -19,27 +22,28 @@ String Expression
 {{ "Hello World" }}
 {{ 'Hello World' }}
 {{ "Escape \n\r\\\"\'\t\b\f'" }}
-{{ f"This is not allowed{'!'}" }}
-{{ r"This is not allowed!" }}
-{{ b"This is not allowed!" }}
 
 ---
 
 (template
+  (content)
   (expression
     (string
       (string_start)
       (string_end)))
+  (content)
   (expression
     (string
       (string_start)
       (string_content)
       (string_end)))
+  (content)
   (expression
     (string
       (string_start)
       (string_content)
       (string_end)))
+  (content)
   (expression
     (string
       (string_start)
@@ -53,24 +57,7 @@ String Expression
         (escape_sequence)
         (escape_sequence))
       (string_end)))
-  (expression
-    (ERROR (identifier))
-    (string
-      (string_start)
-      (string_content)
-      (string_end)))
-  (expression
-    (ERROR (identifier))
-    (string
-      (string_start)
-      (string_content)
-      (string_end)))
-  (expression
-    (ERROR (identifier))
-    (string
-      (string_start)
-      (string_content)
-      (string_end))))
+  (content))
 
 ====================
 Integer Expression
@@ -83,15 +70,19 @@ Integer Expression
 ---
 
 (template
+  (content)
   (expression
     (integer))
+  (content)
   (expression
     (unary_operator
       argument: (integer)))
+  (content)
   (expression
     (ERROR
       (integer))
-    (identifier)))
+    (identifier))
+  (content))
 
 ====================
 Float Expression
@@ -103,11 +94,14 @@ Float Expression
 ---
 
 (template
+  (content)
   (expression
     (float))
+  (content)
   (expression
     (unary_operator
-      argument: (float))))
+      argument: (float)))
+  (content))
 
 ====================
 List Expression
@@ -120,8 +114,10 @@ List Expression
 ---
 
 (template
+  (content)
   (expression
     (list))
+  (content)
   (expression
     (list
       (integer)
@@ -129,6 +125,7 @@ List Expression
       (integer)
       (integer)
       (integer)))
+  (content)
   (expression
     (list
       (string
@@ -142,7 +139,8 @@ List Expression
       (string
         (string_start)
         (string_content)
-        (string_end)))))
+        (string_end))))
+  (content))
 
 ====================
 Tuple Expression
@@ -155,8 +153,10 @@ Tuple Expression
 ---
 
 (template
+  (content)
   (expression
     (tuple))
+  (content)
   (expression
     (tuple
       (integer)
@@ -164,6 +164,7 @@ Tuple Expression
       (integer)
       (integer)
       (integer)))
+  (content)
   (expression
     (tuple
       (string
@@ -177,7 +178,8 @@ Tuple Expression
       (string
         (string_start)
         (string_content)
-        (string_end)))))
+        (string_end))))
+  (content))
 
 ====================
 Dictionary Expression
@@ -190,8 +192,10 @@ Dictionary Expression
 ---
 
 (template
+  (content)
   (expression
     (dictionary))
+  (content)
   (expression
     (dictionary
       (pair
@@ -203,6 +207,7 @@ Dictionary Expression
           (string_start)
           (string_content)
           (string_end)))))
+  (content)
   (expression
     (dictionary
       (pair
@@ -231,7 +236,8 @@ Dictionary Expression
         value: (string
           (string_start)
           (string_content)
-          (string_end))))))
+          (string_end)))))
+  (content))
 
 ====================
 Boolean Expression
@@ -243,10 +249,13 @@ Boolean Expression
 ---
 
 (template
+  (content)
   (expression
     (true))
+  (content)
   (expression
-    (false)))
+    (false))
+  (content))
 
 ====================
 Tilde Expression
@@ -257,6 +266,7 @@ Tilde Expression
 ---
 
 (template
+  (content)
   (expression
     (binary_operator
       left: (binary_operator
@@ -268,7 +278,8 @@ Tilde Expression
       right: (string
         (string_start)
         (string_content)
-        (string_end)))))
+        (string_end))))
+  (content))
 
 ====================
 Conditional Expression
@@ -279,6 +290,7 @@ Conditional Expression
 ---
 
 (template
+  (content)
   (expression
     (conditional_expression
       (string
@@ -291,4 +303,5 @@ Conditional Expression
       (string
         (string_start)
         (string_content)
-        (string_end)))))
+        (string_end))))
+  (content))

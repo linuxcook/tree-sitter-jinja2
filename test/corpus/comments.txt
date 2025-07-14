@@ -8,8 +8,11 @@ Empty Comment
 ---
 
 (template
+  (content)
   (comment)
-  (comment))
+  (content)
+  (comment)
+  (content))
 
 ====================
 Generic Comment
@@ -23,7 +26,32 @@ Generic Comment
 ---
 
 (template
+  (content)
   (comment)
+  (content)
   (comment)
+  (content)
   (comment)
-  (comment))
+  (content)
+  (comment)
+  (content))
+
+====================
+Multi-line Comment
+====================
+
+{#
+  This is spanning
+  multiple lines.
+  # continuing to test...
+  extra
+  extra
+  extra
+#}
+
+---
+
+(template
+  (content)
+  (comment)
+  (content))

@@ -8,7 +8,11 @@ Empty Statement
 ---
 
 (template
-  (ERROR))
+  (content)
+  (ERROR)
+  (content)
+  (ERROR)
+  (content))
 
 ====================
 For Statement
@@ -84,6 +88,7 @@ For Statement w/ Sequence Filter
 ---
 
 (template
+  (content)
   (for_statement
     left: (identifier)
     right: (identifier)
@@ -98,7 +103,9 @@ For Statement w/ Sequence Filter
           object: (identifier)
           attribute: (identifier))
         filter: (identifier)))
-    (content)))
+    (content))
+  (content))
+
 
 ====================
 For Statement w/ Recursive
@@ -150,6 +157,37 @@ For Statement w/ Recursive
   (content))
 
 ====================
+For/Else Statement
+====================
+
+<ul>
+{% for user in users %}
+    <li>{{ user.username|e }}</li>
+{% else %}
+    <li><em>no users found</em></li>
+{% endfor %}
+</ul>
+
+---
+
+(template
+  (content)
+  (for_statement
+    left: (identifier)
+    right: (identifier)
+    (content)
+    (expression
+      (filter
+        object: (attribute
+          object: (identifier)
+          attribute: (identifier))
+        filter: (identifier)))
+    (content)
+    (else_clause
+      (content)))
+  (content))
+
+====================
 If Statement
 ====================
 
@@ -168,9 +206,11 @@ If Statement
 ---
 
 (template
+  (content)
   (if_statement
     condition: (identifier)
     (content))
+  (content)
   (if_statement
     condition: (identifier)
     (content)
@@ -185,7 +225,8 @@ If Statement
             attribute: (identifier))
           filter: (identifier)))
       (content))
-    (content)))
+    (content))
+  (content))
 
 ====================
 If/Else Statement
@@ -204,9 +245,11 @@ If/Else Statement
 {% else %}
     Kenny looks okay --- so far
 {% endif %}
+
 ---
 
 (template
+  (content)
   (if_statement
     condition: (attribute
       object: (identifier)
@@ -217,6 +260,7 @@ If/Else Statement
         object: (identifier)
         attribute: (identifier))
       (content)))
+  (content)
   (if_statement
     condition: (attribute
       object: (identifier)
@@ -228,7 +272,8 @@ If/Else Statement
         attribute: (identifier))
       (content))
     (else_clause
-      (content))))
+      (content)))
+  (content))
 
 
 ====================
@@ -246,6 +291,7 @@ Macro Statement
 ---
 
 (template
+  (content)
   (macro_statement
     name: (identifier)
     parameters: (parameters
@@ -321,6 +367,7 @@ Call Statement
 ---
 
 (template
+  (content)
   (call_statement
     parameters: (parameters
       (identifier))
@@ -340,7 +387,8 @@ Call Statement
       (attribute
         object: (identifier)
         attribute: (identifier)))
-    (content)))
+    (content))
+  (content))
 
 ====================
 Filter Statement
@@ -355,15 +403,18 @@ Filter Statement
 ---
 
 (template
+  (content)
   (filter_statement
     filter: (identifier)
     (content))
+  (content)
   (filter_statement
     filter: (call
       function: (identifier)
       arguments: (argument_list
         (integer)))
-    (content)))
+    (content))
+  (content))
 
 ====================
 Set Statement
@@ -375,6 +426,7 @@ Set Statement
 ---
 
 (template
+  (content)
   (set_statement
     left: (identifier)
     right: (list
@@ -396,13 +448,15 @@ Set Statement
           (string_start)
           (string_content)
           (string_end)))))
+  (content)
   (set_statement
     left: (pattern_list
       (identifier)
       (identifier))
     right: (call
       function: (identifier)
-      arguments: (argument_list))))
+      arguments: (argument_list)))
+  (content))
 
 ====================
 Block Set Statement
@@ -421,16 +475,20 @@ Block Set Statement
 ---
 
 (template
+  (content)
   (set_statement
     variable: (identifier)
     (content))
+  (content)
   (set_statement
     variable: (filter
       object: (identifier)
       filter: (identifier))
     (content)
     (expression
-      (identifier))))
+      (identifier))
+    (content))
+  (content))
 
 ====================
 Nested Set Statement
@@ -446,14 +504,17 @@ Nested Set Statement
 ---
 
 (template
+  (content)
   (for_statement
     left: (identifier)
     right: (identifier)
+    (content)
     (set_statement
       left: (identifier)
       right: (attribute
         object: (identifier)
         attribute: (identifier)))
+    (content)
     (set_statement
       left: (identifier)
       right: (attribute
@@ -465,7 +526,8 @@ Nested Set Statement
       (content)
       (expression
         (identifier))
-      (content)))
+      (content))
+    (content))
 
 ====================
 Block Statement
@@ -489,24 +551,30 @@ Block Statement
 ---
 
 (template
+  (content)
   (extends_statement
     (string
       (string_start)
       (string_content)
       (string_end)))
+  (content)
   (block_statement
     name: (identifier)
     (content))
+  (content)
   (block_statement
     name: (identifier)
+    (content)
     (expression
       (call
         function: (identifier)
         arguments: (argument_list)))
     (content))
+  (content)
   (block_statement
     name: (identifier)
-    (content)))
+    (content))
+  (content))
 
 ====================
 Include Statement
@@ -521,31 +589,37 @@ Include Statement
 ---
 
 (template
+  (content)
   (include_statement
     (string
       (string_start)
       (string_content)
       (string_end)))
+  (content)
   (include_statement
     (string
       (string_start)
       (string_content)
       (string_end)))
+  (content)
   (include_statement
     (string
       (string_start)
       (string_content)
       (string_end)))
+  (content)
   (include_statement
     (string
       (string_start)
       (string_content)
       (string_end)))
+  (content)
   (include_statement
     (string
       (string_start)
       (string_content)
-      (string_end))))
+      (string_end)))
+  (content))
 
 
 ====================
@@ -558,6 +632,7 @@ Import Statement
 ---
 
 (template
+  (content)
   (import_statement
     name: (aliased_import
       name: (string
@@ -565,6 +640,7 @@ Import Statement
         (string_content)
         (string_end))
       alias: (identifier)))
+  (content)
   (import_from_statement
     module_name: (string
       (string_start)
@@ -573,4 +649,38 @@ Import Statement
     name: (aliased_import
       name: (identifier)
       alias: (identifier))
-    name: (identifier)))
+    name: (identifier))
+  (content))
+
+====================
+Raw Statement
+====================
+
+{% raw %}
+    <ul>
+    {% for item in seq %}
+        <li>{{ item }}</li>
+    {% endfor %}
+    </ul>
+    {% endraw }
+{% endraw %}
+
+{%- raw -%}
+    <ul>
+    {% for item in seq %}
+        <li>{{ item }}</li>
+    {% endfor %}
+    </ul>
+    {%- endraw }
+{%- endraw -%}
+
+---
+
+(template
+  (content)
+  (raw_statement
+    (raw_content))
+  (content)
+  (raw_statement
+    (raw_content))
+  (content))
